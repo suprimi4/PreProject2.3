@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: crud
+  datasource:
+    url: jdbc:postgresql://localhost:5432/user
+    driverClassName: org.postgresql.Driver
+    username: postgres
+    password: qwerty12356
+  jpa:
+    hibernate:
+      ddl-auto: create

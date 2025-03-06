@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Окно добавления пользователя</title>
+</head>
+<body>
+<h2>Форма добавления пользователя</h2>
+
+<form action="/users/add" method="POST">
+
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" placeholder="Введите имя" required>
+    <br><br>
+
+
+    <label for="age">Age:</label>
+    <input type="number" id="age" name="age" placeholder="Введите возраст" required>
+    <br><br>
+
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" placeholder="Ввежиье почту" required>
+    <br><br>
+
+    <input type="submit" value="Add User">
+</form>
+
+</body>
+</html>
