@@ -7,22 +7,22 @@
 <body>
 <h2>Форма обновления пользователя</h2>
 
-<form th:action="@{/users/update/{id}(id=${userId})}" method="POST">
+<form th:action="@{/users/update/{id}(id=${user.id})}" method="POST">
 
 
 
   <label for="name">Name:</label>
-  <input type="text" id="name" name="name" placeholder="Введите имя(опционально)">
+  <input type="text" id="name" name="name" th:value="${user.name}">
   <br><br>
 
 
   <label for="age">Age:</label>
-  <input type="number" id="age" name="age" placeholder="Введите возраст(опционально)">
+  <input type="number" id="age" name="age" th:value="${user.age}">
   <br><br>
 
 
   <label for="email">Email:</label>
-  <input type="email" id="email" name="email" placeholder="Введите почту(опционально)">
+  <input type="email" id="email" name="email" th:value="${user.email}">
   <br><br>
 
   <input type="submit" value="Add User">

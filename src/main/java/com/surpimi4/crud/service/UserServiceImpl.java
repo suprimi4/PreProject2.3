@@ -29,34 +29,40 @@ public class UserServiceImpl {
         userRepository.deleteById(id);
     }
 
-    public void updatedUser(Integer id, User user) {
-        User dbUser = findUserById(id);
-        if (!user.getName().isEmpty()) {
-            dbUser.setName(user.getName());
-        }
-        if (user.getAge() != null) {
-            dbUser.setAge(user.getAge());
-        }
-        if (!user.getEmail().isEmpty()) {
-            dbUser.setEmail(user.getEmail());
-        }
-        userRepository.save(dbUser);
+    public void updateUser(User user) {
+        validateUser(user);
+        userRepository.save(user);
 
     }
 
     public void saveUser(User user) {
-        if (validateService.isUserMailExits(user.getEmail())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Пользователь с данной почтой уже существует");
-        }
-        if (validateService.isUserNameExist(user.getName())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Пользователь с данным именем уже существует");
-        }
+        checkIfUserExists(user);
+        validateUser(user);
         userRepository.save(user);
     }
 
     public User findUserById(Integer id) {
         return userRepository.findById(id).orElse(null);
     }
+
+    private void validateUser(User user) {
+        if (!validateService.isAgeValid(user.getAge())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Возраст пользователя отрицательный");
+        }
+        if (!validateService.isEmailValid(user.getEmail())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Некорректная почта пользователя");
+        }
+    }
+
+    private void checkIfUserExists(User user) {
+        if (validateService.isUserMailExits(user.getEmail())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Пользователь с данной почтой уже существует");
+        }
+        if (validateService.isUserNameExist(user.getName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Пользователь с данным именем уже существует");
+        }
+    }
+
 }
 
 

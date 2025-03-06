@@ -43,9 +43,7 @@ public class UserController {
             userService.saveUser(user);
         } catch (ResponseStatusException e) {
             redirectAttributes.addFlashAttribute("error", e.getReason());
-            return "redirect:/users";
         }
-
         return "redirect:/users";
     }
 
@@ -57,13 +55,17 @@ public class UserController {
 
     @GetMapping("/update/{id}")
     public String updateCurrentUserForm(@PathVariable Integer id, Model model) {
-        model.addAttribute("userId", id);
+        model.addAttribute("user", userService.findUserById(id));
         return "updateUser";
     }
 
     @PostMapping("/update/{id}")
-    public String updateUser(@PathVariable Integer id, @ModelAttribute User user) {
-        userService.updatedUser(id, user);
+    public String updateUser(@ModelAttribute User user, RedirectAttributes redirectAttributes) {
+        try {
+            userService.updateUser(user);
+        } catch (ResponseStatusException e) {
+            redirectAttributes.addFlashAttribute("error", e.getReason());
+        }
         return "redirect:/users";
     }
 }
