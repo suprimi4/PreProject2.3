@@ -2,11 +2,11 @@ package com.surpimi4.crud.controller;
 
 import com.surpimi4.crud.model.User;
 import com.surpimi4.crud.service.UserServiceImpl;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 import java.util.List;
@@ -33,17 +33,19 @@ public class UserController {
     }
 
     @GetMapping("/add")
-    public String addUserForm() {
+    public String addUserForm(Model model) {
+        model.addAttribute("user", new User());
         return "addUser";
     }
 
     @PostMapping("/add")
-    public String addUser(@ModelAttribute User user, RedirectAttributes redirectAttributes) {
-        try {
-            userService.saveUser(user);
-        } catch (ResponseStatusException e) {
-            redirectAttributes.addFlashAttribute("error", e.getReason());
+    public String addUser(@ModelAttribute @Valid User user,
+                          BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "addUser";
         }
+
+        userService.saveUser(user);
         return "redirect:/users";
     }
 
@@ -60,12 +62,13 @@ public class UserController {
     }
 
     @PostMapping("/update/{id}")
-    public String updateUser(@ModelAttribute User user, RedirectAttributes redirectAttributes) {
-        try {
-            userService.updateUser(user);
-        } catch (ResponseStatusException e) {
-            redirectAttributes.addFlashAttribute("error", e.getReason());
+    public String updateUser(@ModelAttribute @Valid User user,
+                             BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "updateUser";
         }
+        userService.updateUser(user);
+
         return "redirect:/users";
     }
 }
