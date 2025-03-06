@@ -1,17 +1,13 @@
 package com.surpimi4.crud.controller;
 
 import com.surpimi4.crud.model.User;
-import com.surpimi4.crud.repository.UserRepository;
 import com.surpimi4.crud.service.UserServiceImpl;
-import jakarta.annotation.PostConstruct;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
+
 
 import java.util.List;
 
