@@ -7,7 +7,9 @@
 <body>
 <h2>Форма добавления пользователя</h2>
 
-<form action="/users/add" method="POST" th:object="${user}">
+<form action="/admin/add" method="POST" th:object="${user}">
+
+
 
     <label for="name">Name:</label>
     <input type="text" id="name" name="name" placeholder="Введите имя" required>
@@ -26,6 +28,8 @@
     <div th:if="${#fields.hasErrors('email')}">Неверный формат почты</div>
     <input type="submit" value="Add User">
 </form>
+
+<div th:insert="fragments/navbar :: logout"></div>
 
 </body>
 </html>

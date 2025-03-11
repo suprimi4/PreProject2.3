@@ -39,16 +39,19 @@
         <td th:text="${user.age}"></td>
         <td th:text="${user.email}"></td>
         <td>
-            <a th:href="@{/users/update/{id}(id=${user.id})}">Edit</a>
+            <a th:href="@{/admin/update/{id}(id=${user.id})}">Edit</a>
         </td>
         <td>
-            <a th:href="@{/users/delete/{id}(id=${user.id})}">Delete</a>
+            <a th:href="@{/admin/delete/{id}(id=${user.id})}">Delete</a>
         </td>
     </tr>
 </table>
 <p th:if="${users.isEmpty()}">Юзеров нет</p>
 <p th:if="${error}" th:text="${error}"></p>
 
-<a href="/users/add">Добавить пользователя </a>
+<a href="/admin/add">Добавить пользователя </a>
+
+
+<div th:insert="fragments/navbar :: logout"></div>
 </body>
 </html>
