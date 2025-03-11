@@ -1,9 +1,6 @@
 package com.surpimi4.crud.dto;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 
@@ -17,16 +14,18 @@ public class UserDTO {
 
 
     @NotEmpty(message = "Имя не может быть пустым")
+    @NotNull
     @Size(min = 2, max = 30, message = "Имя должно быть между 2 и 30 символами")
     private String name;
 
-
+    @NotNull
     @Min(value = 0, message = "Возраст должен больше 0")
     private Integer age;
 
 
     @NotEmpty(message = "Поле почты не должно быть пустым")
     @Email(message = "Почта должна быть валидной")
+    @NotNull
     private String email;
 
     private String password;

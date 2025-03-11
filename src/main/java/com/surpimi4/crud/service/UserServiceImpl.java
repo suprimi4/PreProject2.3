@@ -38,22 +38,11 @@ public class UserServiceImpl {
         Optional<User> dbUser = userRepository.findById(userDTO.getId());
         if (dbUser.isPresent()) {
             User user = dbUser.get();
-            if (userDTO.getName() != null) {
-                user.setName(userDTO.getName());
-            }
-
-            if (userDTO.getAge() != null) {
-                user.setAge(userDTO.getAge());
-            }
-
-            if (userDTO.getEmail() != null) {
-                user.setEmail(userDTO.getEmail());
-            }
-
+            user.setName(userDTO.getName());
+            user.setAge(userDTO.getAge());
+            user.setEmail(userDTO.getEmail());
             userRepository.save(user);
         }
-
-
     }
 
     public void saveUser(UserDTO userDTO) {
