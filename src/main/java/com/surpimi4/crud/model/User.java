@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
 import java.util.Collection;
 import java.util.Set;
 
@@ -41,26 +42,14 @@ public class User implements UserDetails {
     )
     private Set<Role> roles;
 
-    public User(String name, Integer age, String email) {
+    public User(String name, String password, Integer age, String email, Set<Role> roles) {
         this.name = name;
-        this.age = age;
-        this.email = email;
-    }
-
-
-    public User(Integer id, String name, Integer age, String email, String password) {
-        this.id = id;
-        this.name = name;
-        this.age = age;
-        this.email = email;
         this.password = password;
-    }
-    public User(Integer id, String name, Integer age, String email) {
-        this.id = id;
-        this.name = name;
         this.age = age;
         this.email = email;
+        this.roles = roles;
     }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

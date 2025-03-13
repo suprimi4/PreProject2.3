@@ -1,7 +1,10 @@
 package com.surpimi4.crud.dto;
 
+import com.surpimi4.crud.model.Role;
 import jakarta.validation.constraints.*;
 import lombok.*;
+
+import java.util.Set;
 
 
 @AllArgsConstructor
@@ -18,7 +21,7 @@ public class UserDTO {
     @Size(min = 2, max = 30, message = "Имя должно быть между 2 и 30 символами")
     private String name;
 
-    @NotNull
+
     @Min(value = 0, message = "Возраст должен больше 0")
     private Integer age;
 
@@ -28,14 +31,30 @@ public class UserDTO {
     @NotNull
     private String email;
 
+
+    @NotEmpty
+    @NotNull
     private String password;
 
+    private Set<Role> roles;
+    private Set<String> role;
+
+    
 
     public UserDTO(Integer id, String name, Integer age, String email) {
         this.id = id;
         this.name = name;
         this.age = age;
         this.email = email;
+    }
+
+    public UserDTO(Integer id, String name, Integer age, String email, String password, Set<Role> roles) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
     }
 
 

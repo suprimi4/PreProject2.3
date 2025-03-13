@@ -1,6 +1,5 @@
 package com.surpimi4.crud.handler;
 
-import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -20,11 +19,9 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         for (GrantedAuthority authority : authentication.getAuthorities()) {
             if (authority.getAuthority().equals("ROLE_ADMIN")) {
                 response.sendRedirect("/admin");
-                return;
+
             } else if (authority.getAuthority().equals("ROLE_USER")) {
                 response.sendRedirect("/user");
-                return;
-
             }
         }
     }

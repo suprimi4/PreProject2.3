@@ -50,7 +50,7 @@ public class AdminUserController {
             return "addUser";
         }
 
-        userService.saveUser(user);
+        userService.addUser(user);
         return "redirect:/admin";
     }
 
@@ -70,7 +70,6 @@ public class AdminUserController {
     }
 
     @PostMapping("/update/{id}")
-    @Transactional
     public String updateUser(@ModelAttribute @Valid UserDTO user,
                              BindingResult bindingResult, Model model) {
 

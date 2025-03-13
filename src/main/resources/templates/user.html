@@ -31,6 +31,8 @@
         <th>Name</th>
         <th>Age</th>
         <th>Email</th>
+        <th>Password</th>
+        <th>Role</th>
         <th>Update</th>
         <th>Remove</th>
     </tr>
@@ -38,6 +40,10 @@
         <td th:text="${user.name}"></td>
         <td th:text="${user.age}"></td>
         <td th:text="${user.email}"></td>
+        <td th:text="${user.password}"></td>
+        <td>
+            <span th:each="role : ${user.roles}" th:text="${role}"></span>
+        </td>
         <td>
             <a th:href="@{/admin/update/{id}(id=${user.id})}">Edit</a>
         </td>

@@ -29,4 +29,9 @@ public class Role implements GrantedAuthority {
     public String getAuthority() {
         return "ROLE_" + role;
     }
+
+    @Override
+    public String toString() {
+        return  role;
+    }
 }
