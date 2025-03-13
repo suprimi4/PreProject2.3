@@ -3,8 +3,8 @@ package com.surpimi4.crud.controller;
 import com.surpimi4.crud.dto.UserDTO;
 import com.surpimi4.crud.service.UserServiceImpl;
 import jakarta.validation.Valid;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -37,16 +37,26 @@ public class AdminUserController {
 
     @GetMapping("/add")
     public String addUserForm(Model model) {
-        model.addAttribute("user", new UserDTO());
+        if (!model.containsAttribute("user")) {
+            model.addAttribute("user", new UserDTO());
+        }
+
         return "addUser";
     }
 
 
     @PostMapping("/add")
     public String addUser(@ModelAttribute @Valid UserDTO user,
-                          BindingResult bindingResult, Model model) {
+                          BindingResult bindingResult,
+                          Model model) {
         if (bindingResult.hasErrors()) {
+            List<String> errors = bindingResult.getAllErrors()
+                    .stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .toList();
+            model.addAttribute("errors", errors);
             model.addAttribute("user", user);
+
             return "addUser";
         }
 
@@ -64,17 +74,15 @@ public class AdminUserController {
     @GetMapping("/update/{id}")
     public String updateCurrentUserForm(@PathVariable Integer id, Model model) {
         UserDTO existingUser = userService.findUserById(id);
-
         model.addAttribute("user", existingUser);
         return "updateUser";
     }
 
     @PostMapping("/update/{id}")
     public String updateUser(@ModelAttribute @Valid UserDTO user,
-                             BindingResult bindingResult, Model model) {
+                             BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
-            model.addAttribute("user", user);
             return "updateUser";
         }
         userService.updateUser(user);

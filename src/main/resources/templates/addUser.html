@@ -9,29 +9,27 @@
 
 <form action="/admin/add" method="POST" th:object="${user}">
 
-
-
     <label for="name">Name:</label>
-    <input type="text" id="name" name="name" placeholder="Введите имя" required>
+    <input type="text" id="name" th:field="*{name}" placeholder="Введите имя" required>
     <br><br>
-    <div th:if="${#fields.hasErrors('name')}"> Имя пользователя может иметь длину от 2 до 30</div>
+
 
     <label for="age">Age:</label>
-    <input type="number" id="age" name="age" placeholder="Введите возраст" required>
+    <input type="number" id="age" th:field="*{age}" placeholder="Введите возраст" required>
     <br><br>
 
-    <div th:if="${#fields.hasErrors('age')}"> Возраст должен быть больше 0</div>
 
     <label for="email">Email:</label>
-    <input type="email" id="email" name="email" placeholder="Введите почту" required>
+    <input type="email" id="email" th:field="*{email}" placeholder="Введите почту" required>
     <br><br>
-    <div th:if="${#fields.hasErrors('email')}">Неверный формат почты</div>
+
 
     <label for="password">Password:</label>
-    <input type="password" id="password" name="password" placeholder="Введите пароль" required>
+    <input type="password" id="password" th:field="*{password}" placeholder="Введите пароль" required>
     <br><br>
+
     <label for="role">Role:</label>
-    <select id="role" name="role" multiple="multiple" required>
+    <select id="role" th:field="*{role}" multiple="multiple" required>
         <option value="USER">USER</option>
         <option value="ADMIN">ADMIN</option>
     </select>
@@ -39,6 +37,9 @@
 
     <input type="submit" value="Add User">
 </form>
+<div th:if="${errors != null}" class="error-container">
+    <p th:each="error : ${errors}" th:text="${error}" class="error"></p>
+</div>
 
 <div th:insert="fragments/navbar :: logout"></div>
 

@@ -53,10 +53,8 @@
     </tr>
 </table>
 <p th:if="${users.isEmpty()}">Юзеров нет</p>
-<p th:if="${error}" th:text="${error}"></p>
 
 <a href="/admin/add">Добавить пользователя </a>
-
 
 <div th:insert="fragments/navbar :: logout"></div>
 </body>

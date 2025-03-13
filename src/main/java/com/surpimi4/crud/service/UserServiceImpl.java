@@ -40,36 +40,25 @@ public class UserServiceImpl {
     }
 
     public void updateUser(UserDTO userDTO) {
-
-        Set<Role> roles = userDTO.getRole().stream()
-                .map(roleName -> roleRepository.findByRole(roleName)
-                        .orElse(null))
-                .collect(Collectors.toSet());
-        userDTO.setRoles(roles);
-
-        String hashedPassword = passwordEncoder.encode(userDTO.getPassword());
-        userDTO.setPassword(hashedPassword);
-
-        Optional<User> dbUser = userRepository.findById(userDTO.getId());
-        if (dbUser.isPresent()) {
-            User user = dbUser.get();
-            user.setName(userDTO.getName());
-            user.setAge(userDTO.getAge());
-            user.setEmail(userDTO.getEmail());
-            user.setPassword(hashedPassword);
-            user.setRoles(roles);
-            userRepository.save(user);
-        }
+        userRepository.findById(userDTO.getId()).ifPresent(
+                user -> {
+                    user.setName(userDTO.getName());
+                    user.setAge(userDTO.getAge());
+                    user.setEmail(userDTO.getEmail());
+                    user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+                    user.setRoles(getRolesFromNames(userDTO.getRole()));
+                    userRepository.save(user);
+                });
     }
 
     public void addUser(UserDTO userDTO) {
-        Set<Role> roles = userDTO.getRole().stream()
-                .map(roleName -> roleRepository.findByRole(roleName)
-                        .orElse(null))
-                .collect(Collectors.toSet());
-        userDTO.setRoles(roles);
-        String hashedPassword = passwordEncoder.encode(userDTO.getPassword());
-        User user = new User(userDTO.getName(), hashedPassword, userDTO.getAge(), userDTO.getEmail(), roles);
+        User user = new User(
+                userDTO.getName(),
+                passwordEncoder.encode(userDTO.getPassword()),
+                userDTO.getAge(),
+                userDTO.getEmail(),
+                getRolesFromNames(userDTO.getRole())
+        );
         userRepository.save(user);
     }
 
@@ -106,6 +95,12 @@ public class UserServiceImpl {
 
     }
 
+    private Set<Role> getRolesFromNames(Set<String> roleNames) {
+        return roleNames.stream()
+                .map(roleRepository::findByRole)
+                .flatMap(Optional::stream)
+                .collect(Collectors.toSet());
+    }
 }
 
 

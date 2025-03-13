@@ -15,31 +15,26 @@ public class UserDTO {
 
     private Integer id;
 
-
     @NotEmpty(message = "Имя не может быть пустым")
-    @NotNull
     @Size(min = 2, max = 30, message = "Имя должно быть между 2 и 30 символами")
     private String name;
 
 
-    @Min(value = 0, message = "Возраст должен больше 0")
+    @Min(value = 0, message = "Возраст должен быть больше 0")
     private Integer age;
 
 
     @NotEmpty(message = "Поле почты не должно быть пустым")
     @Email(message = "Почта должна быть валидной")
-    @NotNull
     private String email;
 
 
     @NotEmpty
-    @NotNull
     private String password;
 
     private Set<Role> roles;
     private Set<String> role;
 
-    
 
     public UserDTO(Integer id, String name, Integer age, String email) {
         this.id = id;
