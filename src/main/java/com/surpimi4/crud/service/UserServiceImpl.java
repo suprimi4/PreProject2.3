@@ -22,7 +22,9 @@ public class UserServiceImpl {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository,
+                           RoleRepository roleRepository,
+                           PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
@@ -30,7 +32,15 @@ public class UserServiceImpl {
 
     public List<UserDTO> findAllUsers() {
         return userRepository.findAll().stream()
-                .map(user -> new UserDTO(user.getId(), user.getName(), user.getAge(), user.getEmail(), user.getPassword(), user.getRoles()))
+                .map(user -> new UserDTO(
+                                user.getId(),
+                                user.getName(),
+                                user.getAge(),
+                                user.getEmail(),
+                                user.getPassword(),
+                                user.getRoles()
+                        )
+                )
                 .collect(Collectors.toList());
     }
 
@@ -63,12 +73,26 @@ public class UserServiceImpl {
     }
 
     public UserDTO findUserByName(String name) {
-        return userRepository.findByName(name).map(user -> new UserDTO(user.getId(), user.getName(), user.getAge(), user.getEmail())).orElse(null);
+        return userRepository.findByName(name)
+                .map(user -> new UserDTO(
+                                user.getId(),
+                                user.getName(),
+                                user.getAge(),
+                                user.getEmail()
+                        )
+                )
+                .orElse(null);
     }
 
     public UserDTO findUserById(Integer id) {
         return userRepository.findById(id)
-                .map(user -> new UserDTO(user.getId(), user.getName(), user.getAge(), user.getEmail()))
+                .map(user -> new UserDTO(
+                                user.getId(),
+                                user.getName(),
+                                user.getAge(),
+                                user.getEmail()
+                        )
+                )
                 .orElse(null);
     }
 
@@ -87,12 +111,15 @@ public class UserServiceImpl {
             Role userRole = userOptionalRole.get();
             Set<Role> roles = Set.of(userRole);
             userDTO.setRoles(roles);
-
         }
 
-        User user = new User(userDTO.getName(), userDTO.getPassword(), userDTO.getAge(), userDTO.getEmail(), userDTO.getRoles());
+        User user = new User(
+                userDTO.getName(),
+                userDTO.getPassword(),
+                userDTO.getAge(),
+                userDTO.getEmail(),
+                userDTO.getRoles());
         userRepository.save(user);
-
     }
 
     private Set<Role> getRolesFromNames(Set<String> roleNames) {

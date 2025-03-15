@@ -8,8 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-
 import java.util.List;
 
 
@@ -25,12 +23,10 @@ public class AdminUserController {
         this.userService = userService;
     }
 
-
     @GetMapping
     public String getUserList(Model model) {
         List<UserDTO> user = userService.findAllUsers();
         model.addAttribute("users", user);
-
         return "user";
     }
 

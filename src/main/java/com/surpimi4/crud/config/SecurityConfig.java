@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
 
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
@@ -21,7 +20,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity
+
 public class SecurityConfig {
 
     private final UserRepository userRepository;
@@ -41,8 +40,7 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(userDetailsService());
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider(userDetailsService());
         provider.setPasswordEncoder(passwordEncoder());
         return provider;
     }
@@ -59,6 +57,7 @@ public class SecurityConfig {
                         .requestMatchers("/user/register").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/user/**").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers("/addUser.html").permitAll()
                 )
                 .formLogin(formLogin -> formLogin
                         .successHandler(successHandler)
