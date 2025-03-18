@@ -17,7 +17,8 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+    public void onAuthenticationSuccess(HttpServletRequest request,
+                                        HttpServletResponse response,
                                         Authentication authentication) throws IOException {
         String targetUrl = determineTargetUrl(authentication);
         redirectStrategy.sendRedirect(request, response, targetUrl);

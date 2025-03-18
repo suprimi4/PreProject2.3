@@ -8,56 +8,31 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 
 @Controller
 @RequestMapping("/admin")
 
-public class AdminUserController {
+public class AdminController {
 
     private final UserServiceImpl userService;
 
 
-    public AdminUserController(UserServiceImpl userService) {
+    public AdminController(UserServiceImpl userService) {
         this.userService = userService;
     }
 
     @GetMapping
-    public String getUserList(Model model) {
-        List<UserDTO> user = userService.findAllUsers();
-        model.addAttribute("users", user);
+    public String getUserList() {
         return "user";
     }
 
 
     @GetMapping("/add")
-    public String addUserForm(Model model) {
-        if (!model.containsAttribute("user")) {
-            model.addAttribute("user", new UserDTO());
-        }
-
+    public String addUserForm() {
         return "addUser";
-    }
-
-
-    @PostMapping("/add")
-    public String addUser(@ModelAttribute @Valid UserDTO user,
-                          BindingResult bindingResult,
-                          Model model) {
-        if (bindingResult.hasErrors()) {
-            List<String> errors = bindingResult.getAllErrors()
-                    .stream()
-                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                    .toList();
-            model.addAttribute("errors", errors);
-            model.addAttribute("user", user);
-
-            return "addUser";
-        }
-
-        userService.addUser(user);
-        return "redirect:/admin";
     }
 
 
@@ -68,7 +43,8 @@ public class AdminUserController {
     }
 
     @GetMapping("/update/{id}")
-    public String updateCurrentUserForm(@PathVariable Integer id, Model model) {
+    public String updateCurrentUserForm(@PathVariable Integer id,
+                                        Model model) {
         UserDTO existingUser = userService.findUserById(id);
         model.addAttribute("user", existingUser);
         return "updateUser";

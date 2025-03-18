@@ -1,5 +1,7 @@
 package com.surpimi4.crud.dto;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.surpimi4.crud.model.Role;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -8,7 +10,7 @@ import java.util.Set;
 
 
 @AllArgsConstructor
-@NoArgsConstructor
+
 @Getter
 @Setter
 public class UserDTO {
@@ -31,25 +33,37 @@ public class UserDTO {
 
     @NotEmpty
     private String password;
-
+    @JsonIgnore
     private Set<Role> roles;
+
     private Set<String> role;
 
 
-    public UserDTO(Integer id, String name, Integer age, String email) {
+    public UserDTO(Integer id,
+                   String name,
+                   Integer age,
+                   String email) {
         this.id = id;
         this.name = name;
         this.age = age;
         this.email = email;
     }
 
-    public UserDTO(Integer id, String name, Integer age, String email, String password, Set<Role> roles) {
+    public UserDTO(Integer id,
+                   String name,
+                   Integer age,
+                   String email,
+                   String password,
+                   Set<Role> roles) {
         this.id = id;
         this.name = name;
         this.age = age;
         this.email = email;
         this.password = password;
         this.roles = roles;
+    }
+
+    public UserDTO() {
     }
 
 

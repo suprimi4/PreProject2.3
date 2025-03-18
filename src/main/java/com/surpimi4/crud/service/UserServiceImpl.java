@@ -32,15 +32,21 @@ public class UserServiceImpl {
 
     public List<UserDTO> findAllUsers() {
         return userRepository.findAll().stream()
-                .map(user -> new UserDTO(
-                                user.getId(),
-                                user.getName(),
-                                user.getAge(),
-                                user.getEmail(),
-                                user.getPassword(),
-                                user.getRoles()
-                        )
-                )
+                .map(user -> {
+                    Set<String> roleNames = user.getRoles().stream()
+                            .map(Role::getRole)
+                            .collect(Collectors.toSet());
+                    UserDTO userDTO = new UserDTO(
+                            user.getId(),
+                            user.getName(),
+                            user.getAge(),
+                            user.getEmail(),
+                            user.getPassword(),
+                            user.getRoles()
+                    );
+                    userDTO.setRole(roleNames);
+                    return userDTO;
+                })
                 .collect(Collectors.toList());
     }
 
@@ -62,6 +68,7 @@ public class UserServiceImpl {
     }
 
     public void addUser(UserDTO userDTO) {
+
         User user = new User(
                 userDTO.getName(),
                 passwordEncoder.encode(userDTO.getPassword()),
@@ -74,12 +81,19 @@ public class UserServiceImpl {
 
     public UserDTO findUserByName(String name) {
         return userRepository.findByName(name)
-                .map(user -> new UserDTO(
-                                user.getId(),
-                                user.getName(),
-                                user.getAge(),
-                                user.getEmail()
-                        )
+                .map(user -> {
+                            Set<String> roleNames = user.getRoles().stream()
+                                    .map(Role::getRole)
+                                    .collect(Collectors.toSet());
+                            UserDTO userDTO = new UserDTO(
+                                    user.getId(),
+                                    user.getName(),
+                                    user.getAge(),
+                                    user.getEmail()
+                            );
+                            userDTO.setRole(roleNames);
+                            return userDTO;
+                        }
                 )
                 .orElse(null);
     }

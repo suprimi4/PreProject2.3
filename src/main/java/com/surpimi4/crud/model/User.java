@@ -1,5 +1,7 @@
 package com.surpimi4.crud.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
@@ -42,7 +44,11 @@ public class User implements UserDetails {
     )
     private Set<Role> roles;
 
-    public User(String name, String password, Integer age, String email, Set<Role> roles) {
+    public User(String name,
+                String password,
+                Integer age,
+                String email,
+                Set<Role> roles) {
         this.name = name;
         this.password = password;
         this.age = age;
