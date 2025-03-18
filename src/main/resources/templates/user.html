@@ -12,34 +12,19 @@
             src="https://code.jquery.com/jquery-3.7.1.js"
             integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
             crossorigin="anonymous"></script>
-
+    <script type="text/javascript" src="/js/navInit.js"></script>
 </head>
 <body>
 
-<nav class="navbar bg-dark border-bottom border-body" data-bs-theme="dark">
-    <div class="container-fluid d-flex justify-content-between">
-        <p class="text-white">
-            Login:
-            <span id="loggedUserName"></span>
-            Roles:
-            <span id="loggedUserRoles"></span>
-        </p>
-        <a class="navbar-brand text-white" href="/logout">Logout</a>
-    </div>
-</nav>
+<div id="topNav">
+
+</div>
 
 <div class="container-fluid">
     <div class="row">
 
-        <div class="col-md-2 bg-light p-3 min-vh-100">
-            <ul class="nav flex-column nav-tabs">
-                <li class="nav-item" id="admin_nav">
-                    <a class="nav-link text-dark" href="/admin">Admin Panel</a>
-                </li>
-                <li class="nav-item" id="user_nav">
-                    <a class="nav-link text-dark" href="/user">User Panel</a>
-                </li>
-            </ul>
+        <div class="col-md-2 bg-light p-3 min-vh-100" id ="sideNav">
+
         </div>
 
         <div class="col-md-10">
@@ -124,42 +109,6 @@
     </div>
 </div>
 
-<script>
-    $(document).ready(function () {
-        $.ajax({
-            url: '/api/user/profile',
-            method: 'GET',
-            success: function (loggedUser) {
-                let roles = loggedUser.role;
-
-                $("#loggedUserName").text(loggedUser.name);
-
-                let rolesText = roles.map(function (role) {
-                    return role;
-                }).join(', ');
-
-                $("#loggedUserRoles").text(rolesText);
-
-                if (roles.includes("ADMIN")) {
-                    $("#admin_nav").show()
-                } else {
-                    $("#admin_nav").hide()
-                }
-
-                if (roles.includes("USER")) {
-                    $("#user_nav").show()
-                } else {
-                    $("#user_nav").hide()
-                }
-
-
-            },
-            error: function () {
-                alert("Не удалось загрузить данные о пользователе.");
-            }
-        });
-    });
-</script>
 
 <script>
     $(document).ready(function () {
