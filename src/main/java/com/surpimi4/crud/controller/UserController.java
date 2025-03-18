@@ -3,10 +3,9 @@ package com.surpimi4.crud.controller;
 import com.surpimi4.crud.dto.UserDTO;
 import com.surpimi4.crud.service.UserServiceImpl;
 import jakarta.validation.Valid;
-import org.springframework.security.core.Authentication;
+
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,10 +24,7 @@ public class UserController {
     }
 
     @GetMapping
-    public String getCurrentUserProfile(Model model, Authentication authentication) {
-        String username = authentication.getName();
-        UserDTO user = userService.findUserByName(username);
-        model.addAttribute("user", user);
+    public String getCurrentUserProfile() {
         return "currentUser";
     }
 
@@ -39,12 +35,11 @@ public class UserController {
 
 
     @PostMapping("/register")
-    public String registerUser(@ModelAttribute @Valid UserDTO user, Model model) {
+    public String registerUser(@ModelAttribute @Valid UserDTO user) {
 
         try {
             userService.registerUser(user);
         } catch (IllegalArgumentException e) {
-            model.addAttribute("error", e.getMessage());
             return "registerForm";
         }
 

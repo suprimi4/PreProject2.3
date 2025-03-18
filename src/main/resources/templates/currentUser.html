@@ -8,17 +8,19 @@
           rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
           crossorigin="anonymous">
+    <script
+            src="https://code.jquery.com/jquery-3.7.1.js"
+            integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+            crossorigin="anonymous"></script>
 </head>
 <body>
 <nav class="navbar bg-dark border-bottom border-body" data-bs-theme="dark">
     <div class="container-fluid d-flex justify-content-between">
         <p class="text-white">
             Login:
-            <span th:text="${loggedUser.name}"></span>
+            <span id="loggedUserName"></span>
             Roles:
-            <span th:each="role : ${roles}">
-                    <span th:text="${role.substring(5)}"></span>
-                </span>
+            <span id="loggedUserRoles"></span>
         </p>
         <a class="navbar-brand text-white" href="/logout">Logout</a>
     </div>
@@ -28,12 +30,12 @@
 
     <div class="row">
 
-        <div class="col-md-2 bg-light p-3 border-end min-vh-100">
+        <div class="col-md-2 bg-light p-3 min-vh-100">
             <ul class="nav flex-column nav-tabs">
-                <li class="nav-item" th:if="${roles.contains('ROLE_ADMIN')}">
+                <li class="nav-item" id="admin_nav">
                     <a class="nav-link text-dark" href="/admin">Admin Panel</a>
                 </li>
-                <li class="nav-item" th:if="${roles.contains('ROLE_USER')}">
+                <li class="nav-item" id="user_nav">
                     <a class="nav-link text-dark" href="/user">User Panel</a>
                 </li>
             </ul>
@@ -41,7 +43,7 @@
 
         <div class="col-md-10 p-4">
             <h1 class="text-center mb-4">Профиль пользователя</h1>
-            <table class="table table-bordered table-striped w-75 mx-auto text-center">
+            <table id="user_table" class="table table-bordered table-striped w-75 mx-auto text-center">
                 <thead class="table-dark">
                 <tr>
                     <th>Имя</th>
@@ -50,17 +52,55 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td th:text="${user.name}"></td>
-                    <td th:text="${user.age}"></td>
-                    <td th:text="${user.email}"></td>
-                </tr>
+                <tr></tr>
                 </tbody>
             </table>
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: '/api/user/profile',
+            method: 'GET',
+            success: function (loggedUser) {
+                let roles = loggedUser.role;
 
+                $("#loggedUserName").text(loggedUser.name);
+
+                let rolesText = roles.map(function (role) {
+                    return role;
+                }).join(', ');
+
+                $("#loggedUserRoles").text(rolesText);
+
+                if (roles.includes("ADMIN")) {
+                    $("#admin_nav").show()
+                } else {
+                    $("#admin_nav").hide()
+                }
+
+                if (roles.includes("USER")) {
+                    $("#user_nav").show()
+                } else {
+                    $("#user_nav").hide()
+                }
+
+                $('#user_table tr:last').after('<tr> ' +
+                    '<td>' + loggedUser.name + ' </td>' +
+                    '<td>' + loggedUser.age + ' </td>' +
+                    '<td>' + loggedUser.email + ' </td>' +
+
+
+                    '</tr>'
+                );
+            },
+            error: function () {
+                alert("Не удалось загрузить данные о пользователе.");
+            }
+        });
+    });
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>

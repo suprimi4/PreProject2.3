@@ -115,6 +115,7 @@
                                 <option value="ADMIN">ADMIN</option>
                             </select>
                         </div>
+                        <input type="hidden" name="userId" id="editUserId">
                         <button type="submit" class="btn btn-primary">Update User</button>
                     </form>
                 </div>
@@ -150,6 +151,8 @@
                 } else {
                     $("#user_nav").hide()
                 }
+
+
             },
             error: function () {
                 alert("Не удалось загрузить данные о пользователе.");
@@ -174,9 +177,10 @@
                         '<td>' + user.age + ' </td>' +
                         '<td>' + user.email + ' </td>' +
                         '<td>' + rolesText + ' </td>' +
-                        '<td> <a href="/admin/update/' + user.id + '" class="btn btn-info">Edit</a> </td>' +
-                        '<td> <a href="/admin/delete/' + user.id + '" class="btn btn-danger">Delete</a> </td>' +
-                        '</tr>'
+                        '<td> <a href="#" data-id="' + user.id + '" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#editModal">Edit</a> </td>' +
+                        '<td> <a href="#" data-id="' + user.id + '" class="btn btn-danger delete-btn">Delete</a> </td>' +
+
+                    '</tr>'
                     );
                 });
             },
@@ -187,6 +191,77 @@
 
     });
 
+    $(document).on('click', '.btn-info', function () {
+        let userId = $(this).data('id');
+
+        $.ajax({
+            url: '/api/admin/user/' + userId,
+            method: 'GET',
+            success: function (user) {
+
+                $('#editName').val(user.name);
+                $('#editAge').val(user.age);
+                $('#editEmail').val(user.email);
+
+                $('#editRole').val(user.role);
+                $('#editUserId').val(userId);
+
+                $('#editUserForm').submit(function (e) {
+                    e.preventDefault();
+
+                    let userData = {
+                        id: $('#editUserId').val(),
+                        name: $('#editName').val(),
+                        age: $('#editAge').val(),
+                        email: $('#editEmail').val(),
+                        password: $('#editPassword').val(),
+                        role: $('#editRole').val()
+                    };
+                    $.ajax({
+                        url: '/api/admin/user/' + userId,
+                        method: 'PUT',
+                        contentType: 'application/json',
+                        data: JSON.stringify(userData),
+                        success: function () {
+                            $('#editModal').modal('hide');
+                            location.reload()
+                        },
+                        error: function () {
+                            alert('Ошибка при обновлении пользователя!');
+                        }
+                    });
+                });
+            },
+            error: function () {
+                alert('Не удалось загрузить данные пользователя.');
+            }
+
+        });
+
+
+
+    });
+
+
+    $(document).on('click', '.btn-danger', function (e) {
+        e.preventDefault();
+        let userId = $(this).data('id');
+        let row = $(this).closest('tr');
+
+        if (confirm('Вы уверены, что хотите удалить этого пользователя?')) {
+            $.ajax({
+                url: '/api/admin/user/' + userId,
+                method: 'DELETE',
+                success: function () {
+                    row.remove();
+                    alert('Пользователь удален');
+                },
+                error: function () {
+                    alert('Ошибка при удалении пользователя!');
+                }
+            });
+        }
+    });
 </script>
 
 

@@ -59,6 +59,7 @@ public class AdminRestController {
     public ResponseEntity<?> updateUser(@PathVariable Integer id,
                                         @RequestBody @Valid UserDTO user,
                                         BindingResult bindingResult) {
+
         if (bindingResult.hasErrors()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Неккоректные данные пользователя");
         }
