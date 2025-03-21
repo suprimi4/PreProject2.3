@@ -1,0 +1,29 @@
+version: "3.8"
+services:
+  app:
+    build:
+      dockerfile: Dockerfile
+    container_name: app-cont
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/${DB}
+      - SPRING_DATASOURCE_USERNAME=${USER}
+      - SPRING_DATASOURCE_PASSWORD=${PASSWORD}
+  db:
+    image: postgres:16.8
+    restart: always
+    container_name: db-cont
+    environment:
+    - POSTGRES_USER=${USER}
+    - POSTGRES_PASSWORD=${PASSWORD}
+    - POSTGRES_DB=${DB}
+    ports:
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+volumes:
+  postgres_data:
+

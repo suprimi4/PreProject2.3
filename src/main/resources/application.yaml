@@ -2,20 +2,13 @@ spring:
   application:
     name: crud
   datasource:
-    url: jdbc:postgresql://localhost:5432/user
+    url: jdbc:postgresql://localhost:5433/userDB
     driverClassName: org.postgresql.Driver
     username: postgres
-    password: qwerty12356
-
+    password: postgres
   jpa:
     hibernate:
       ddl-auto: update
-  web:
-    resources:
-      static-locations: classpath:/static/
-logging:
-  level:
-    org:
-      springframework:
-        security: DEBUG
-
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
