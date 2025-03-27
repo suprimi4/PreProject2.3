@@ -2,13 +2,28 @@ spring:
   application:
     name: crud
   datasource:
-    url: jdbc:postgresql://localhost:5433/userDB
     driverClassName: org.postgresql.Driver
-    username: postgres
-    password: postgres
+    username: ${DB_USER:postgres}
+    password: ${DB_PASSWORD:postgres}
   jpa:
     hibernate:
       ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+
+---
+spring:
+  config:
+    activate:
+      on-profile: default
+  datasource:
+    url: jdbc:postgresql://localhost:5433/${DB_NAME:userDB}
+
+---
+spring:
+  config:
+    activate:
+      on-profile: docker
+  datasource:
+    url: jdbc:postgresql://db:5432/${DB_NAME:userDB}
