@@ -24,18 +24,17 @@ jobs:
           push: true
           tags: suprimi4/crud-app:latest
 
-
-#  push_compose:
-#    name: Push docker-compose.yaml to remote server
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#      - name: Copy docker-compose.yml to server
-#        uses: appleboy/scp-action@v0.1.7
-#        with:
-#          host: ${{ secrets.HOST }}
-#          username: ${{ secrets.USERNAME }}
-#          port: ${{ secrets.PORT }}
-#          key: ${{ secrets.SSH_PRIVATE_KEY }}
-#          source: "docker-compose.yml"
-#          target: ${{ secrets.TARGET_PATH }}
+  push_compose:
+    name: Push docker-compose.yaml to remote server
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Copy docker-compose.yml to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          port: ${{ secrets.PORT }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "docker-compose.yml"
+          target: ${{ secrets.TARGET_PATH }}
