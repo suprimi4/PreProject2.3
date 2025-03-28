@@ -38,3 +38,4 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "docker-compose.yaml"
           target: ${{ secrets.TARGET_PATH }}
+          overwrite: 'true'
