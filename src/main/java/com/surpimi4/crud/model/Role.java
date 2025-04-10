@@ -1,6 +1,6 @@
 package com.surpimi4.crud.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

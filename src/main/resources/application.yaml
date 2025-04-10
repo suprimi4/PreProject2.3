@@ -7,10 +7,27 @@ spring:
     password: ${DB_PASSWORD:postgres}
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+  liquibase:
+    enabled: true
+    change-log: db.changelog/db.changelog-master.yaml
+dadata:
+  client:
+    token: 62a9ba31789e22a249b0aa6b011d91354ab739a2
+    secret: f7c0708b202e8fbbad9e75b3d6f0b7282bc4b502
+  api-url: https://cleaner.dadata.ru/api/v1/clean/address
+openrouteservice:
+  api:
+    key: 5b3ce3597851110001cf62489685b995ebb94dd5a2f71e058b84672f
+    url: https://api.openrouteservice.org/v2/directions/driving-car
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG
 
 ---
 spring:
@@ -27,3 +44,11 @@ spring:
       on-profile: docker
   datasource:
     url: jdbc:postgresql://db:5432/${DB_NAME:userDB}
+
+---
+spring:
+  config:
+    activate:
+      on-profile: minikube
+  datasource:
+    url: jdbc:postgresql://host.minikube.internal:5433/${DB_NAME:userDB}

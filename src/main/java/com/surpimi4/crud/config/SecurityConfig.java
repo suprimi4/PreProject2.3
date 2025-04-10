@@ -4,7 +4,6 @@ import com.surpimi4.crud.repository.UserRepository;
 import com.surpimi4.crud.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -19,7 +18,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 
 public class SecurityConfig {
 
@@ -56,10 +55,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/admin/**", "/api/**").hasRole("ADMIN")
                         .requestMatchers("/user/**").hasAnyRole("ADMIN", "USER")
-                        .requestMatchers("/", "/user/register","/favicon.ico").permitAll()
+                        .requestMatchers("/", "/user/register","/favicon.ico","/geocode/**","/routing/api/**").permitAll()
                         .requestMatchers("/js/**", "/fragments/**").permitAll()
-
-
                 )
                 .formLogin(formLogin -> formLogin
                         .successHandler(successHandler)
